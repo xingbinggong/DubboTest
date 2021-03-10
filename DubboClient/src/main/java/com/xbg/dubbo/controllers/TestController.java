@@ -1,7 +1,11 @@
 package com.xbg.dubbo.controllers;
 
+import com.jddglobal.ac.api.AcAuthAgent;
+import com.jddglobal.uc.api.UcUserAgent;
 import com.xbg.dubbo.dto.ItemClass;
+import com.xbg.dubbo.pojo.DubboConsumerApi;
 import com.xbg.dubbo.service.TestService;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,13 +17,26 @@ import java.util.List;
 @RequestMapping("api/test")
 public class TestController {
 
-    @Autowired
+    //@Autowired(required = false)
+    @DubboReference(check = false)
     private TestService testService;
+
+    @DubboReference(check = false)
+    private UcUserAgent acAuthAgent;
+
+    @Autowired
+    private DubboConsumerApi dubboConsumerApi;
 
     @GetMapping("/hello")
     public String hello(String name){
 
         return testService.sayHello(name);
+    }
+
+    @GetMapping("/helloapi")
+    public String helloApi(String name) {
+        TestService service = dubboConsumerApi.getService(TestService.class);
+        return service.sayHello(name);
     }
 
     @GetMapping("/list")

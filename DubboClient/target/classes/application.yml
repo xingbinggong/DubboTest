@@ -1,2 +1,14 @@
 server:
   port: 8090
+
+dubbo_api:
+  address: zookeeper://127.0.0.1:2181
+
+dubbo:
+  application:
+    name: test_consumer
+  registry:
+    #address: zookeeper://10.222.50.190:2181
+    address: zookeeper://10.222.50.190:2181
+#    timeout: 100000
+
